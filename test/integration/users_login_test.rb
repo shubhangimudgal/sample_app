@@ -1,13 +1,31 @@
 require "test_helper"
 
-class UsersLogin < ActionDispatch::IntegrationTest
-
+class UsersLoginTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:michael)
   end
+  test "login with valid information followed by logout" do
+    post login_path, params: { session: { email:    @user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @user
+    follow_redirect!
+    assert_template 'users/show'
+    assert_select "a[href=?]", login_path, count: 0
+    assert_select "a[href=?]", logout_path
+    assert_select "a[href=?]", user_path(@user)
+    assert_response :see_other
+    assert_not is_logged_in? assert_redirected_to root_url
+    # Simulate a user clicking logout in a second window.
+    delete logout_path
+    follow_redirect!
+    assert_select "a[href=?]", login_path
+    assert_select "a[href=?]", logout_path, count: 0
+    assert_select "a[href=?]", user_path(@user), count: 0
+  end
 end
 
-class InvalidPasswordTest < UsersLogin
+class InvalidPasswordTest < UsersLoginTest
 
   test "login path" do
     get login_path
@@ -25,7 +43,7 @@ class InvalidPasswordTest < UsersLogin
   end
 end
 
-class ValidLogin < UsersLogin
+class ValidLogin < UsersLoginTest
 
   def setup
     super
@@ -63,6 +81,10 @@ class LogoutTest < Logout
   test "successful logout" do
     assert_not is_logged_in?
     assert_response :see_other
+    assert_redirected_to root_url
+  end
+  test "should still work after logout in second window" do
+    delete logout_path
     assert_redirected_to root_url
   end
 
