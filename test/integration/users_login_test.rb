@@ -1,35 +1,13 @@
 require "test_helper"
 
-class UsersLoginTest < ActionDispatch::IntegrationTest
+class UsersLogin < ActionDispatch::IntegrationTest
+
   def setup
     @user = users(:michael)
   end
-  test "login with valid information followed by logout" do
-    post login_path, params: { session: { email:    @user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @user
-    follow_redirect!
-    assert_template 'users/show'
-    assert_select "a[href=?]", login_path, count: 0
-    assert_select "a[href=?]", logout_path
-    assert_select "a[href=?]", user_path(@user)
-    delete logout_path
-    assert_response :see_other
-    assert_not is_logged_in?
-    assert_redirected_to root_url
-    # Simulate a user clicking logout in a second window.
-    delete logout_path
-    assert_redirected_to root_url
-    follow_redirect!
-    assert_template "static_pages/home"
-    assert_select "a[href=?]", login_path
-    assert_select "a[href=?]", logout_path, count: 0
-    assert_select "a[href=?]", user_path(@user), count: 0
-  end
 end
 
-class InvalidPasswordTest < UsersLoginTest
+class InvalidPasswordTest < UsersLogin
 
   test "login path" do
     get login_path
@@ -47,12 +25,12 @@ class InvalidPasswordTest < UsersLoginTest
   end
 end
 
-class ValidLogin < UsersLoginTest
+class ValidLogin < UsersLogin
 
   def setup
     super
     post login_path, params: { session: { email:    @user.email,
-                                      password: 'password' } }
+                                          password: 'password' } }
   end
 end
 
@@ -62,7 +40,6 @@ class ValidLoginTest < ValidLogin
     assert is_logged_in?
     assert_redirected_to @user
   end
-
   test "redirect after login" do
     follow_redirect!
     assert_template 'users/show'
@@ -73,6 +50,7 @@ class ValidLoginTest < ValidLogin
 end
 
 class Logout < ValidLogin
+
   def setup
     super
     delete logout_path
@@ -80,18 +58,27 @@ class Logout < ValidLogin
 end
 
 class LogoutTest < Logout
+
   test "successful logout" do
     assert_not is_logged_in?
     assert_response :see_other
     assert_redirected_to root_url
   end
+
+  test "redirect after logout" do
+    follow_redirect!
+    assert_select "a[href=?]", login_path
+    assert_select "a[href=?]", logout_path,      count: 0
+    assert_select "a[href=?]", user_path(@user), count: 0
+  end
+
   test "should still work after logout in second window" do
     delete logout_path
     assert_redirected_to root_url
   end
 end
 
-class RememberingTest < UsersLoginTest
+class RememberingTest < UsersLogin
 
   test "login with remembering" do
     log_in_as(@user, remember_me: '1')
