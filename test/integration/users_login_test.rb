@@ -12,6 +12,10 @@ class InvalidPasswordTest < UsersLogin
   test "login path" do
     get login_path
     assert_template 'sessions/new'
+    assert_select 'input[name=?]', 'session[email]'
+    assert_select 'input[name=?]', 'session[password]'
+    assert_select 'input[name=?]', 'session[remember_me]'
+    assert_select 'input[type=?]', 'submit'
   end
 
   test "login with valid email/invalid password" do
