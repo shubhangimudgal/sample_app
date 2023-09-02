@@ -9,7 +9,7 @@ class MicropostsInterface < ActionDispatch::IntegrationTest
 end
 
 class MicropostSidebarTest < MicropostsInterface
-#     test "should display the rught micropost count" do
+#     test "should display the right micropost count" do
 #         get root_path
 #         assert_match Micropost.count, response.body
 #     end
