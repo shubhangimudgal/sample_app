@@ -98,8 +98,12 @@ class UserTest < ActiveSupport::TestCase
     # self-posts for user with followers
     michael.microposts.each do |post_self|
       assert michael.feed.include?(post_self)
+      assert_equal michael.feed.distinct,michael.feed
     end
-
+    #self_posts for user with no followers
+    archer.microposts.each do |post_self|
+      assert archer.feed.include?(post_self)
+    end
     # posts from non-followed user
     archer.microposts.each do |post_unfollowed|
       assert_not michael.feed.include?(post_unfollowed)
