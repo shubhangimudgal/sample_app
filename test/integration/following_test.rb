@@ -28,6 +28,13 @@ class FollowPagesTest < FollowingTest
       assert_select "a[href=?]", user_path(user)
     end
   end
+  test "feed on Home page" do
+    get root_path
+    @user.feed.paginate(page: 1).each do |Micropost|
+      assert_match CGI.escapeHTML(micropost.content), response.body
+    end
+  end
+end
   class FollowTest < FollowingTest
     test "should follow a user the standard way" do
       assert_difference "@user.following.count", 1 do
