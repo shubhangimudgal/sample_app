@@ -14,11 +14,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile.production --tag smudgal2964/sample_app:1.0.2
+    # - name: Build the Docker image
+    #   run: docker build . --file Dockerfile.production --tag smudgal2964/sample_app:1.0.2
     - name: Push the docker image
       env:
-         DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       run: |
          # Access the secret using the MY_SECRET_TOKEN environment variable
           echo "My secret token: $MY_SECRET_TOKEN"
