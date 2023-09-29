@@ -17,10 +17,10 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile.production --tag smudgal2964/sample_app:1.0.2
     - name: Use API Token
-        env:
-          MY_SECRET_TOKEN: ${{ secrets.API_TOKEN }}
-        run: |
-          # Access the secret using the MY_SECRET_TOKEN environment variable
+      env:
+         MY_SECRET_TOKEN: ${{ secrets.API_TOKEN }}
+      run: |
+         # Access the secret using the MY_SECRET_TOKEN environment variable
           echo "My secret token: $MY_SECRET_TOKEN"
           # Use the secret in your commands, e.g., for authentication
           some-command --token $MY_SECRET_TOKEN
