@@ -3,12 +3,16 @@ kind: Pod
 metadata:
   name: web
   namespace: default
+  labels:
+    app: web
 spec:
   containers:
   - name: sample-app
-    image: smudgal2964/sample_app:1.0.2
+    image: smudgal2964/sample_app:1.0.8
     ports:
     - containerPort: 3000
     env:
+    - name: RAILS_ENV
+      value: production
     - name: DATABASE_URL
-      value: postgres://sample_app:shubhs100@hostname:5432/database
+      value: postgres://sample_app:shubhs100@db:5432/sample_app
