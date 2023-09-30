@@ -1,10 +1,15 @@
 FROM ruby:3.1.4
 RUN apt update && apt install imagemagick libvips -y
-#RUN apk update && apk add ruby=3.1.4
 RUN gem install rails -v 7.0.4
 RUN gem install bundler -v 2.3.14
+ENV RAILS_ENV production
+ENV RAILS_SERVE_STATIC_FILES true
+ENV RAILS_LOG_TO_STDOUT true
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
 COPY . /app
 WORKDIR /app
-RUN bundle install
+RUN bundle install --without development test && bin/rails assets:precompile
+RUN chmod +x /app/entrypoint.sh
 EXPOSE 3000
 CMD ["/app/entrypoint.sh"]
