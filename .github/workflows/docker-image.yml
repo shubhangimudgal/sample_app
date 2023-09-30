@@ -27,3 +27,5 @@ jobs:
       run: docker build --file Dockerfile.production --tag smudgal2964/sample_app:${SHORT_SHA} --build-arg RAILS_MASTER_KEY=${{ env.RAILS_MASTER_KEY }} .
     - name: Push the docker image
       run: docker push smudgal2964/sample_app:${SHORT_SHA}
+    - name: echo published image tag
+      run: echo "Published image tag is: smudgal2964/sample_app:${SHORT_SHA}"
