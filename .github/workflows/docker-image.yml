@@ -28,4 +28,4 @@ jobs:
     - name: Push the docker image
       run: docker push smudgal2964/sample_app:${SHORT_SHA}
     - name: echo published image tag
-      run: echo "Published image tag is: smudgal2964/sample_app: $SHORT_SHA"
+      run: 'echo "Published image tag is: smudgal2964/sample_app: $SHORT_SHA"'
