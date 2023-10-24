@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-db
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: postgresql
+          image: {{ .Values.db.image }}
+          ports:
+          - containerPort: 5432
+          env:
+          - name: POSTGRES_PASSWORD
+            value: shubhs100
+          - name: POSTGRES_USER
+            value: sample_app
+          - name: POSTGRES_DB
+            value: sample_app
