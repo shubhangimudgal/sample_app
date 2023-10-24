@@ -1,0 +1,2 @@
+web:
+  image: smudgal2964/sample_app:183d6ec
