@@ -24,4 +24,7 @@ spec:
         - name: RAILS_ENV
           value: production
         - name: DATABASE_URL
-          value: postgres://sample_app:shubhs100@{{ .Release.Name }}-db:5432/sample_app
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-db-creds
+              key: DB_URL

@@ -22,7 +22,10 @@ spec:
           - containerPort: 5432
           env:
           - name: POSTGRES_PASSWORD
-            value: shubhs100
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-db-creds
+                key: POSTGRES_PASSWORD
           - name: POSTGRES_USER
             value: sample_app
           - name: POSTGRES_DB
