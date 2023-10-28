@@ -2,3 +2,5 @@ web:
   image: smudgal2964/sample_app:bleh
 db:
   image: postgres:16.0-bullseye
+ingress: 
+  enabled: true

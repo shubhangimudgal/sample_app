@@ -1,2 +1,5 @@
 web:
   image: smudgal2964/sample_app:1.0.8
+ingress:
+  hostname: saprod.getdevops.services
+
