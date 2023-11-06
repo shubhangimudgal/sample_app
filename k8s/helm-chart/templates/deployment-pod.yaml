@@ -6,7 +6,7 @@ metadata:
     app: web
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 3
+  replicas: {{ .Values.web.replicas }}
   selector:
     matchLabels:
       app: web
