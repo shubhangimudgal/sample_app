@@ -1,4 +1,5 @@
-pipeline {
+@Library(shared-library) _
+pipeline {  
     agent {
       kubernetes {
         label "sample-app-builder"
@@ -47,6 +48,7 @@ pipeline {
             steps {
                 container('docker') {
                     sh 'docker push smudgal2964/sample_app:1.0-jenkins'
+                RubyBuild()
                 }
             }
         }
@@ -54,7 +56,7 @@ pipeline {
     post {
         always {
             container('docker') {
-	        sh 'docker logout'
+              sh 'docker logout'
             }
         }
     }
